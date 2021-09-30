@@ -309,7 +309,7 @@ static void __redisRunPushCallback(redisAsyncContext *ac, redisReply *reply) {
 /* Helper function to free the context. */
 static void __redisAsyncFree(redisAsyncContext *ac) {
     redisContext *c = &(ac->c);
-    redisCallback cb, *pcb;
+    redisCallback cb, *pcb = NULL;
     dictIterator it;
     dictEntry *de;
 
