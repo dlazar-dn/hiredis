@@ -51,7 +51,7 @@ static int _dictInit(dict *ht, dictType *type, void *privDataPtr);
 
 /* Generic hash function (a popular one from Bernstein).
  * I tested a few and this was the best. */
-static unsigned int dictGenHashFunction(const unsigned char *buf, size_t len) {
+static unsigned int dictGenHashFunction(const unsigned char *buf, int len) {
     unsigned int hash = 5381;
 
     while (len--)
@@ -267,16 +267,11 @@ static dictEntry *dictFind(dict *ht, const void *key) {
     return NULL;
 }
 
-static dictIterator *dictGetIterator(dict *ht) {
-    dictIterator *iter = hi_malloc(sizeof(*iter));
-    if (iter == NULL)
-        return NULL;
-
+static void dictInitIterator(dictIterator *iter, dict *ht) {
     iter->ht = ht;
     iter->index = -1;
     iter->entry = NULL;
     iter->nextEntry = NULL;
-    return iter;
 }
 
 static dictEntry *dictNext(dictIterator *iter) {
@@ -297,10 +292,6 @@ static dictEntry *dictNext(dictIterator *iter) {
         }
     }
     return NULL;
-}
-
-static void dictReleaseIterator(dictIterator *iter) {
-    hi_free(iter);
 }
 
 /* ------------------------- private functions ------------------------------ */
