@@ -595,15 +595,15 @@ void redisProcessCallbacks(redisAsyncContext *ac) {
         __redisAsyncDisconnect(ac);
 }
 
-static void __redisAsyncHandleConnectFailure(redisAsyncContext *ac) {
+void __redisAsyncHandleConnectFailure(redisAsyncContext *ac) {
     if (ac->onConnect) ac->onConnect(ac, REDIS_ERR);
     __redisAsyncDisconnect(ac);
 }
 
-/* Internal helper function to detect socket status the first time a read or
+/* Helper function to detect socket status the first time a read or
  * write event fires. When connecting was not successful, the connect callback
  * is called with a REDIS_ERR status and the context is free'd. */
-static int __redisAsyncHandleConnect(redisAsyncContext *ac) {
+int __redisAsyncHandleConnect(redisAsyncContext *ac) {
     int completed = 0;
     redisContext *c = &(ac->c);
 
